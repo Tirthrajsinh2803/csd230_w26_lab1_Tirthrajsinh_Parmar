@@ -3,24 +3,24 @@ package csd230.lab1.pojos;
 import java.util.List;
 import java.util.Objects;
 public class Cart {
-    private List<CartItem> items;
+    private List<Product> items;
 
     public Cart() {
     }
 
-    public Cart(List<CartItem> items) {
+    public Cart(List<Product> items) {
         this.items = items;
     }
 
-    public void addItem(CartItem item) {
+    public void addItem(Product item) {
         items.add(item);
     }
 
-    public List<CartItem> getItems() {
+    public List<Product> getItems() {
         return items;
     }
 
-    public void setItems(List<CartItem> items) {
+    public void setItems(List<Product> items) {
         this.items = items;
     }
 
