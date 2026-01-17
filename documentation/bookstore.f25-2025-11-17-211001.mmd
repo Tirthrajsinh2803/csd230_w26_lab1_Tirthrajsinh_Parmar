@@ -1,13 +1,37 @@
 classDiagram
-    Editable <|--Product
-    Product <|--Ticket
-    Product <|--Publication
+    direction LR
+
+    Editable <|-- Product
+    Product <|-- Ticket
+    Product <|-- Publication
     Publication <|-- Book
     Publication <|-- Magazine
     Magazine <|-- DiscMag
     SaleableItem <|.. Product
     Serializable <|.. Product
     Product <-- CashTill
+
+%% ✅ REQUIRED FOR LAB 1: Cart + Many-to-Many with Product
+    class Cart{
+        -long id
+    }
+    Cart "*" -- "*" Product : contains
+
+%% ✅ REQUIRED FOR LAB 1: Your niche hierarchy (example: Electronics)
+    class ElectronicDevice{
+        <<abstract>>
+        -String brand
+    }
+    class Laptop{
+        -int ramGB
+    }
+    class Smartphone{
+        -boolean has5G
+    }
+    Product <|-- ElectronicDevice
+    ElectronicDevice <|-- Laptop
+    ElectronicDevice <|-- Smartphone
+
 
     class Product{
         -String productId
@@ -16,11 +40,13 @@ classDiagram
     class Serializable{
         <<interface>>
     }
+
     class Ticket{
         +description
         +price
         +sellItem()
     }
+
     class Editable{
         <<abstract>>
         -Scanner input
@@ -32,10 +58,10 @@ classDiagram
         +Enum getInput(Enum)
         +edit()*
         +initialize()*
-
     }
+
     class Publication{
-        <<Abstract>>
+        <<abstract>>
         -String title
         -double price
         -int copies
@@ -46,8 +72,8 @@ classDiagram
         +toString()
         +equals()
         +hashCode()
-
     }
+
     class Book{
         -String author
         +edit()
@@ -60,8 +86,8 @@ classDiagram
         +toString()
         +equals()
         +hashCode()
-
     }
+
     class Magazine{
         -int orderQty
         -java.util.Date currentIssue
@@ -73,6 +99,7 @@ classDiagram
         +initialize()
         +sellItem()
     }
+
     class DiscMag{
         -boolean hasDisc
         +edit()
@@ -80,18 +107,18 @@ classDiagram
         +sellItem()
 
         +DiscMag()
-        +DiscMag(boolean, hasDisc, int orderQty, Date currentIssue, String title, double price, int copies)
-
+        +DiscMag(boolean hasDisc, int orderQty, Date currentIssue, String title, double price, int copies)
     }
+
     class CashTill{
         -double runningTotal
         +CashTill()
         +showTotal()
         +sellItem(SaleableItem item)
     }
-    class SaleableItem {
+
+    class SaleableItem{
         <<interface>>
         +sellItem()
         +getPrice()
-
     }
