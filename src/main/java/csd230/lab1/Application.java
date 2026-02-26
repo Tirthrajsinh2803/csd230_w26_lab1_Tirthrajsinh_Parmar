@@ -36,75 +36,58 @@ public class Application implements CommandLineRunner {
 		SpringApplication.run(Application.class, args);
 	}
 
+	/**
+	 * ✅ Lecture 2.5 prereq: App must run and MVC controllers must work.
+	 * This runner only seeds sample data IF tables are empty.
+	 * It will not spam console or break controllers.
+	 */
 	@Override
 	public void run(String... args) {
 
-		System.out.println("===== CREATE =====");
+		// Seed Books only if none exist
+		if (bookRepo.count() == 0) {
+			BookEntity b1 = new BookEntity("Java Basics", 29.99, 10, "Tirth");
+			BookEntity b2 = new BookEntity("Spring Boot", 39.99, 5, "Carella");
+			BookEntity b3 = new BookEntity("Java Advanced", 49.99, 8, "Tirth");
+			bookRepo.save(b1);
+			bookRepo.save(b2);
+			bookRepo.save(b3);
+		}
 
-		BookEntity b1 = new BookEntity("Java Basics", 29.99, 10, "Tirth");
-		BookEntity b2 = new BookEntity("Spring Boot", 39.99, 5, "Carella");
+		// Seed Magazine only if none exist
+		if (magazineRepo.count() == 0) {
+			MagazineEntity m1 = new MagazineEntity(
+					"Tech Monthly", 9.99, 20,
+					101, LocalDateTime.now()
+			);
+			magazineRepo.save(m1);
+		}
 
-		bookRepo.save(b1);
-		bookRepo.save(b2);
+		// Seed DiscMag only if none exist
+		if (discMagRepo.count() == 0) {
+			DiscMagEntity dm1 = new DiscMagEntity(
+					"Gaming Special", 12.99, 15,
+					202, LocalDateTime.now(), true
+			);
+			discMagRepo.save(dm1);
+		}
 
-		MagazineEntity m1 = new MagazineEntity(
-				"Tech Monthly", 9.99, 20,
-				101, LocalDateTime.now()
-		);
-		magazineRepo.save(m1);
+		// Seed Ticket only if none exist
+		if (ticketRepo.count() == 0) {
+			TicketEntity t1 = new TicketEntity("Concert", 55.00);
+			ticketRepo.save(t1);
+		}
 
-		DiscMagEntity dm1 = new DiscMagEntity(
-				"Gaming Special", 12.99, 15,
-				202, LocalDateTime.now(), true
-		);
-		discMagRepo.save(dm1);
+		// Seed Electronics only if none exist
+		if (electronicsRepo.count() == 0) {
+			ElectronicsEntity e1 = new ElectronicsEntity("Headphones", "Sony", 99.99);
+			electronicsRepo.save(e1);
+		}
 
-		TicketEntity t1 = new TicketEntity("Concert", 55.00);
-		ticketRepo.save(t1);
-
-		ElectronicsEntity e1 =
-				new ElectronicsEntity("Headphones", "Sony", 99.99);
-		electronicsRepo.save(e1);
-
-		System.out.println("===== READ =====");
-
-		bookRepo.findAll().forEach(System.out::println);
-
-		System.out.println("Derived Query:");
-		bookRepo.findByAuthor("Tirth").forEach(System.out::println);
-
-		System.out.println("LIKE Query:");
-		bookRepo.findByAuthorLike("%ir%").forEach(System.out::println);
-
-		System.out.println("@Query:");
-		bookRepo.searchAuthorContains("are").forEach(System.out::println);
-
-		System.out.println("===== UPDATE =====");
-
-		b1 = bookRepo.findById(b1.getId()).orElseThrow();
-		b1 = new BookEntity("Java Advanced", 49.99, 8, "Tirth");
-		bookRepo.save(b1);
-
-		System.out.println("===== DELETE =====");
-
-		ticketRepo.delete(t1);
-		System.out.println("Tickets count: " + ticketRepo.count());
-
-		System.out.println("===== MANY-TO-MANY =====");
-
-		CartEntity cart = new CartEntity();
-		cartRepo.save(cart);
-
-		cart.addProduct(b2);
-		cart.addProduct(e1);
-		cartRepo.save(cart);
-
-		System.out.println("Cart contains:");
-		cart.getProducts().forEach(p -> {
-			System.out.println(p);
-			p.sellItem();
-		});
-
-		System.out.println("===== DONE =====");
+		// Create one cart if none exists (used later in cart exercise)
+		if (cartRepo.count() == 0) {
+			CartEntity cart = new CartEntity();
+			cartRepo.save(cart);
+		}
 	}
 }
