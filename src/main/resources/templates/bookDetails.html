@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        .card { border: 1px solid #ddd; padding: 16px; border-radius: 8px; max-width: 600px; }
+        .row { margin: 10px 0; }
+        .label { font-weight: bold; display:inline-block; width: 120px; }
+        a { color:#1f6feb; text-decoration:none; }
+        a:hover { text-decoration:underline; }
+        .actions { margin-top: 16px; }
+    </style>
+</head>
+<body>
+
+<h1>Book Details</h1>
+
+<div th:if="${book == null}">
+    <p>Book not found.</p>
+    <p><a href="/books">← Back to list</a></p>
+</div>
+
+<div class="card" th:if="${book != null}">
+    <div class="row"><span class="label">ID:</span> <span th:text="${book.getId()}"></span></div>
+    <div class="row"><span class="label">Author:</span> <span th:text="${book.getAuthor()}"></span></div>
+    <div class="row"><span class="label">Price:</span> <span th:text="${book.getPrice()}"></span></div>
+
+    <div class="actions">
+        <a th:href="@{'/books/edit/' + ${book.getId()}}">Edit</a>
+        &nbsp;|&nbsp;
+        <a th:href="@{'/books/delete/' + ${book.getId()}}"
+           onclick="return confirm('Delete this book?');">Delete</a>
+        &nbsp;|&nbsp;
+        <a href="/books">Back</a>
+    </div>
+</div>
+
+</body>
+</html>

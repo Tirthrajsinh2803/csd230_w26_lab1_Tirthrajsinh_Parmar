@@ -1,21 +1,29 @@
 package csd230.lab1.entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity @DiscriminatorValue("TICKET")
+@Entity
+@DiscriminatorValue("TICKET")
 public class TicketEntity extends ProductEntity {
-    private String description;
-    @Column(name = "ticket_price") private double price;
+
+    private String eventName;
+    private double price;
+
     public TicketEntity() {}
-    public TicketEntity(String d, double p) { this.description = d; this.price = p; }
 
-    @Override public void sellItem() { System.out.println("Selling Ticket: " + description + " for $" + price); }
-    @Override public double getPrice() { return price; }
+    public TicketEntity(String eventName, double price) {
+        this.eventName = eventName;
+        this.price = price;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String d) { this.description = d; }
-    public void setPrice(double p) { this.price = p; }
-    @Override public String toString() { return "Ticket{desc='" + description + "', price=" + price + "}"; }
+    @Override
+    public void sellItem() {
+        System.out.println("Sold Ticket: " + eventName);
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
 }
