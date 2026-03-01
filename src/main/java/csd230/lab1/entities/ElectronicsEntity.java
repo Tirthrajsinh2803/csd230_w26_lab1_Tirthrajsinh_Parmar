@@ -5,20 +5,16 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("TICKET")
-public class TicketEntity extends ProductEntity {
-
-    @Column(nullable = false)
-    private String eventName;
+@DiscriminatorValue("ELECTRONICS")
+public class ElectronicsEntity extends ProductEntity {
 
     @Column(nullable = false)
     private Integer quantity = 0;
 
-    public TicketEntity() {}
+    public ElectronicsEntity() {}
 
-    public TicketEntity(String title, String eventName, Integer quantity, Double price) {
+    public ElectronicsEntity(String title, Integer quantity, Double price) {
         super(title, price);
-        this.eventName = eventName;
         this.quantity = (quantity == null ? 0 : quantity);
     }
 
@@ -35,9 +31,6 @@ public class TicketEntity extends ProductEntity {
     public Double getPrice() {
         return this.price;
     }
-
-    public String getEventName() { return eventName; }
-    public void setEventName(String eventName) { this.eventName = eventName; }
 
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = (quantity == null ? 0 : quantity); }
