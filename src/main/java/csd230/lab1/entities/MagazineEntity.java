@@ -1,22 +1,37 @@
 package csd230.lab1.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-@Entity @DiscriminatorValue("MAGAZINE")
+@Entity
+@DiscriminatorValue("MAGAZINE")
 public class MagazineEntity extends PublicationEntity {
-    private int orderQty;
-    private LocalDateTime currentIssue;
+
+    @Column(nullable = false)
+    private Integer quantity = 0;
+
     public MagazineEntity() {}
-    public MagazineEntity(String t, double p, int c, int o, LocalDateTime d) { super(t, p, c); this.orderQty = o; this.currentIssue = d; }
-    public int getOrderQty() { return orderQty; }
-    public void setOrderQty(int o) { this.orderQty = o; }
-    public void setCurrentIssue(LocalDateTime d) { this.currentIssue = d; }
-    public LocalDateTime getCurrentIssue() { return currentIssue; }
-    @Override public String toString() { return "Mag{issue=" + currentIssue + ", " + super.toString() + "}"; }
+
+    public MagazineEntity(String title, Integer quantity, Double price) {
+        super(title, price);
+        this.quantity = (quantity == null ? 0 : quantity);
+    }
+
+    @Override
+    public boolean sellItem() {
+        if (quantity != null && quantity > 0) {
+            quantity--;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = (quantity == null ? 0 : quantity); }
 }

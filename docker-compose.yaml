@@ -1,15 +1,27 @@
-# see https://hub.docker.com/_/mysql for environment variables
-# note changes port to 3307
 services:
-  mysql:
-    container_name: 'mysql'
-    image: 'mysql:latest'
+  db:
+    image: mysql:8.3
+    container_name: mysql-lab3
     environment:
-      - 'MYSQL_DATABASE=csd230'
-      - 'MYSQL_PASSWORD=itstudies12345'
-      - 'MYSQL_ROOT_PASSWORD=itstudies12345'
-      - 'MYSQL_USER=fcarella'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: csd230
     ports:
-      - '3307:3306'
-    volumes: # stores data in local folder: ./volumes
-      - ./volumes/mysql:/var/lib/mysql
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: lab3-app
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: mysql
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/csd230?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+volumes:
+  mysql_data:
